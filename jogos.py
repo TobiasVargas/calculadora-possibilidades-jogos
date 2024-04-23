@@ -2,23 +2,63 @@ from random import randint
 import itertools
 
 # Cria uma matriz com todos os adversarios
+
 adversarios = [
-    ["Internacional", "Grêmio"], #1
-    ["Flamengo", "Fluminense"],  #2
-    ["Botafogo", "Vasco"],       #3
-    ["Coritiba", "Juventude"],   #4
-    ["Cruzeiro", "Fortaleza"],   #5
-    ["Bahia", "Criciuma"],       #6
-    ["Corinthians", "Vitória"],  #7
-    ["Cuiabá", "Atlético MG"],   #8
-    ["Criciuma", "Atlético PR"], #9
-    ["Bragantino", "Goianense"]  #10
+    [
+        {
+            "time": "Internacional",
+            "probabilidade": 50
+        },
+        {
+            "time": "Grêmio",
+            "probabilidade": 50
+        }
+    ],
+    [
+        {
+            "time": "Flamengo",
+            "probabilidade": 30
+        },
+        {
+            "time": "São Paulo",
+            "probabilidade": 70
+        }
+    ],
+    [
+        {
+            "time": "Palmeiras",
+            "probabilidade": 10
+        },
+        {
+            "time": "Corinthians",
+            "probabilidade": 90
+        }
+    ],
+    [
+        {
+            "time": "Atlético-MG",
+            "probabilidade": 80
+        },
+        {
+            "time": "Fluminense",
+            "probabilidade": 20
+        }
+    ],
+    [
+        {
+            "time": "Santos",
+            "probabilidade": 35
+        },
+        {
+            "time": "Athletico-PR",
+            "probabilidade": 65
+        }
+    ]
 ]
 
 print("CALCULANDO POSSIBILIDADES")
 print("\n")
 
-# cria uma lista vazia de jogos
 jogos = []
 for adversario in range(0, len(adversarios)):
     # adiciona um codigo para cada conjunto de adversarios, ou seja, para cada jogo, e adiciona na lista de jogos
@@ -28,17 +68,22 @@ for adversario in range(0, len(adversarios)):
 possibilidades = []
 
 for jogo in jogos:
-    # cria uma label para cada jogo. Exemplo: 0.Internacional x Grêmio
-    label = jogo["codigo"] + "." + jogo["times"][0] + ' x ' + jogo["times"][1]
-    possibilidade_vitoria_0 = label + ' = Vitória ' + jogo["times"][0]
-    possibilidade_vitoria_1 = label + ' = Vitória ' + jogo["times"][1]
-    possibilidade_empate = label + ' = Empate'
-    # Gera as 3 possibilidades de uma partida: Vitória do time A, vitória do time B ou empate
-    jogo["resultados"] = [possibilidade_vitoria_0, possibilidade_vitoria_1, possibilidade_empate]
-    # Adiciona no dicionário de jogos
-    possibilidades.append(possibilidade_vitoria_0)
-    possibilidades.append(possibilidade_vitoria_1)
-    possibilidades.append(possibilidade_empate)
+    label = jogo["codigo"] + "." + jogo["times"][0]["time"] + ' x ' + jogo["times"][1]["time"] + " = "
+    jogo_provavel = jogo["times"]
+    probabilidade_maior = ""
+    if jogo_provavel[0]["probabilidade"] > jogo_provavel[1]["probabilidade"]:
+        probabilidade_maior = label + "Vitória " + jogo_provavel[0]["time"]
+        possibilidades.append(probabilidade_maior)
+    elif jogo_provavel[1]["probabilidade"] > jogo_provavel[0]["probabilidade"]:
+        probabilidade_maior = label + "Vitória " + jogo_provavel[1]["time"]
+        possibilidades.append(probabilidade_maior)
+    else:
+        probabilidade_maior = label + "Empate"
+        possibilidades.append(probabilidade_maior)
+        probabilidade_maior = label + "Vitória " + jogo_provavel[0]["time"]
+        possibilidades.append(probabilidade_maior)
+        probabilidade_maior = label + "Vitória " + jogo_provavel[1]["time"]
+        possibilidades.append(probabilidade_maior)
 
 # Obtendo todas as combinações de possibilidades. Usa a biblioteca itertools
 combinacoes = list(itertools.combinations(possibilidades, len(jogos)))
